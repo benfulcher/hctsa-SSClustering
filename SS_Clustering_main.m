@@ -1,9 +1,12 @@
+% If your code hangs in SS_NormaliseAndFilter remove '-append' from save 
+% command on line 150 in TS_local_clear_remove 
 
-% Bug in SS_NormaliseAndFilter so load straight
-load('HCTSA_Empirical1000_Aug2015_N_filtered.mat');
-save('HCTSA_N.mat');
+% Load your data matrix then normalise and filter it
+SS_NormaliseAndFilter('HCTSA_Empirical1000_Aug2015');
 
-% SS_NormaliseAndFilter('HCTSA_Empirical1000_Aug2015');
+% % If you have filtered normalised data already
+% load('HCTSA_Empirical1000_Aug2015_N_filtered.mat');
+% save('HCTSA_N.mat');
 
 % Enter values of K you want to calculate 
 % NB: The largest value of K will automatically be used for the linkage clustering etc
