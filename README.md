@@ -7,7 +7,7 @@ It provides a method of selecting a reduced set of operations from the full libr
 # Set up
 
   - Ensure that you have fully installed the HCTSA library from the above link - and the external toolboxes required
-  - Run <code>setup.m</code> from the HCTSA library each time before you use this code
+  - Run <code>startup.m</code> from the HCTSA library each time before you use this code to add the HCTSA functions to your path
   
 # Usage 
 
