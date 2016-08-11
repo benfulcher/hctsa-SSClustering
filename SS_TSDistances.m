@@ -1,4 +1,4 @@
-function SS_TSCorrelations
+function SS_TSDistances
 
 load('resid_variance.mat');
 

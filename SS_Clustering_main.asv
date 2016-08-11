@@ -11,18 +11,14 @@ SS_ClusterKMedoids([3,5,10,20,50]);
 % Calculates residual variance for above clusters 
 SS_ResidVariance;
 
-% Calculates time series distances for original and reduced operation sets
+% Calculates time series distances using original and reduced operation
+% sets
 SS_TSDistances;
 
-% Cluster K-medoids centres using linkage clustering
 SS_LinkageClusterOps;
 
-% Calculate all operation correlations with their cluster centres
 SS_CorrOpsWithClusters;
 
-% Output final clusters to a text file
-SS_OutputBestOpsTxtFile('cluster_info.txt');
+SS_OutputBestOpsTxtFile;
 
-% Cluster the time series in the reduced operation space to visualise
-% effectiveness of selected operations 
 SS_TestOpsOnTSClusters;
