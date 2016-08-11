@@ -6,7 +6,7 @@ if nargin < 1
     ks = [2,5,10,20,50,100];
 end
 
-%% CLUSTER OPERATIONS USING K MEDOIDS METHOD
+% Cluster operations using K-medoids method
 fprintf('Computing pairwise correlation distances for operations\n');
 D = squareform(pdist(TS_DataMat','correlation'));
 D = 1-abs(1-D);
