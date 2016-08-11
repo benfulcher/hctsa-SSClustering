@@ -5,8 +5,9 @@ save('HCTSA_N.mat');
 
 % SS_NormaliseAndFilter('HCTSA_Empirical1000_Aug2015');
 
-% Enter values of K you want to calculate
-SS_ClusterKMedoids([3,5,10,20,50]);
+% Enter values of K you want to calculate 
+% NB: The largest value of K will automatically be used for the linkage clustering etc
+SS_ClusterKMedoids([3,5,10,20]);
 
 % Calculates residual variance for above clusters 
 SS_ResidVariance;
