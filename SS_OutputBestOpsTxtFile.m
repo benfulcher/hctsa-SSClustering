@@ -1,15 +1,12 @@
-function SS_OutputBestOpsTxtFile(fName)
+function SS_OutputBestOpsTxtFile
 
+load('run_options.mat');
 load('HCTSA_N.mat');
 load('linkage_clusters_with_member_corrs.mat');
 
-if nargin < 1
-    fName = 'cluster_info.txt';
-end
+fprintf('Saving clustering information to %s \n',outTxtFileName);
 
-fprintf('Saving clustering information to %s \n',fName);
-
-fID = fopen(fName,'w');
+fID = fopen(outTxtFileName,'w');
 fprintf(fID,['Output from kmedoids clustering (k = %i) followed by ',...
     'linkage clustering (corr_dist_threshold = %f)\n\n'],kmedoidsClusters.k,corr_dist_threshold);
 

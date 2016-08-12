@@ -1,10 +1,8 @@
-function SS_NormaliseAndFilter( filename )
+function SS_NormaliseAndFilter
 
-if nargin < 1
-    filename = 'HCTSA_Empirical1000_Aug2015';
-end
+load('run_options.mat');
 
-load(strcat(filename,'.mat'));
+load(strcat(inMatFileName,'.mat'));
 save('HCTSA.mat');
 
 TS_normalize('scaledRobustSigmoid',[0.8,1.0]);

@@ -1,15 +1,12 @@
-function SS_LinkageClusterOps(corr_dist_threshold)
+function SS_LinkageClusterOps
 
+load('run_options.mat');
 load('HCTSA_N.mat');
 load('clusters_kmedoids.mat');
 load('resid_variance.mat');
 
-if nargin < 1
-    corr_dist_threshold = 0.2;
-end
 
-% Use max value K
-kmed = km(length(km));
+kmed = km(kIdx);
 
 % Find best operations
 chosenOps = Operations(kmed.CCi);
@@ -21,14 +18,14 @@ reducedOpCorrDists = 1 - abs(1-reducedOpCorrDists);
 % Iteratively linkage cluster the operations based on a minimum correlation
 % distance within the clusters
 keepGoing = true;
-nLinkageClusters = kmed.k / 2;
+nLinkageClusters = kmed.k * 0.75;
 shouldIncrement = true; 
-
+incAmount = round(max(kmed.k/100,1));
 while keepGoing    
     if shouldIncrement
         if nLinkageClusters >= kmed.k; break; end
 
-        nLinkageClusters = nLinkageClusters + 1;
+        nLinkageClusters = nLinkageClusters + incAmount;
         fprintf('Trying with %i linkage clusters\n',nLinkageClusters);
         shouldIncrement = false;
     else
@@ -76,7 +73,7 @@ set(gca,'Ytick',1:kmed.k,'YtickLabel',orderedNames,'YTickLabelRotation',0,...
 
 % Save info regarding best operations
 save('linkage_clustered_ops.mat','kmed','distMat_cl','orderedNames',...
-    'ord','cluster_Groupi','corr_dist_threshold');
+    'ord','cluster_Groupi');
 
 end
 

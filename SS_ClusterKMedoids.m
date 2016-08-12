@@ -1,17 +1,13 @@
-function km = SS_ClusterKMedoids( ks )
+function km = SS_ClusterKMedoids
 
 load('HCTSA_N.mat');
-
-if nargin < 1
-    ks = [2,5,10,20,50,100];
-end
+load('run_options.mat');
 
 % Cluster operations using K-medoids method
 fprintf('Computing pairwise correlation distances for operations\n');
 D = squareform(pdist(TS_DataMat','correlation'));
 D = 1-abs(1-D);
 maxIter = 100;
-nrepeats = 100;
 for i = 1:length(ks)
     k = ks(i);
     
@@ -20,7 +16,7 @@ for i = 1:length(ks)
     km(i).k = k;
     
     [km(i).CCi, km(i).Cass, km(i).err, km(i).Cord] = ...
-        BF_kmedoids(D, k, maxIter, nrepeats); 
+        BF_kmedoids(D, k, maxIter, op_km_repeats); 
     
     % Slower MATLAB method calculates pdist each time
     % [km(i).idx,km(i).C,km(i).sumd,km(i).D] = kmedoids(TS_DataMat',k,...

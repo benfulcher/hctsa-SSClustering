@@ -1,11 +1,11 @@
 function SS_CorrOpsWithClusters
 
+load('run_options.mat');
 load('HCTSA_N.mat');
 load('clusters_kmedoids.mat');
 load('linkage_clustered_ops');
 
-% Use max value K available
-kmedoidsClusters = km(length(km));
+kmedoidsClusters = km(kIdx);
 
 allClusters = cluster_Groupi{1};
 
@@ -34,6 +34,6 @@ for i = 1:length(allClusters)
 end
 
 save(strcat('linkage_clusters_with_member_corrs.mat'),'linkageClusters',...
-    'kmedoidsClusters','corr_dist_threshold');
+    'kmedoidsClusters');
 end
 
