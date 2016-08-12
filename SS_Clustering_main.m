@@ -1,16 +1,15 @@
 % If your code hangs in SS_NormaliseAndFilter remove '-append' from save 
 % command on line 150 in TS_local_clear_remove 
 
-% Load your data matrix then normalise and filter it
-SS_NormaliseAndFilter('HCTSA_Empirical1000_Aug2015');
+% Set up default run info file
+SS_SetupRunInfo;
 
-% % If you have filtered normalised data already
-% load('HCTSA_Empirical1000_Aug2015_N_filtered.mat');
-% save('HCTSA_N.mat');
+% Load your data matrix then normalise and filter it
+SS_NormaliseAndFilter;
 
 % Enter values of K you want to calculate 
 % NB: The largest value of K will automatically be used for the linkage clustering etc
-SS_ClusterKMedoids([3,5,10,20]);
+SS_ClusterKMedoids;
 
 % Calculates residual variance for above clusters 
 SS_ResidVariance;
@@ -25,7 +24,7 @@ SS_LinkageClusterOps;
 SS_CorrOpsWithClusters;
 
 % Output final clusters to a text file
-SS_OutputBestOpsTxtFile('cluster_info.txt');
+SS_OutputBestOpsTxtFile;
 
 % Cluster the time series in the reduced operation space to visualise
 % effectiveness of selected operations 
