@@ -2,7 +2,7 @@
 % command on line 150 in TS_local_clear_remove 
 
 % Set up default run info file
-SS_SetupRunInfo;
+SS_SetupRunOptions;
 
 % Load your data matrix then normalise and filter it
 SS_NormaliseAndFilter;

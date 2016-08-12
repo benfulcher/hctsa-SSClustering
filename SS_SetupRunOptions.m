@@ -1,5 +1,5 @@
 function SS_SetupRunInfo( ks , kToUse , op_km_repeats , ts_km_repeats , ...
-    inMatFileName , outTxtFileName , corr_dist_threshold)
+    inMatFileName , outTxtFileName , corr_dist_threshold , av_ts_cluster_size)
 
 if ~exist('ks','var')
     ks = [5,7,10,20:20:100,200,500,1000];
@@ -22,6 +22,9 @@ end
 if ~exist('corr_dist_threshold','var')
     corr_dist_threshold = 0.2;
 end
+if ~exist('av_ts_cluster_size','var')
+    av_ts_cluster_size = 10;
+end
 
 kIdx = find(ks == kToUse);
 if isempty(kIdx)
@@ -31,7 +34,7 @@ if isempty(kIdx)
 end
 
 save('run_options.mat','ks','kIdx','op_km_repeats','ts_km_repeats',...
-    'inMatFileName','outTxtFileName','corr_dist_threshold');
+    'inMatFileName','outTxtFileName','corr_dist_threshold','av_ts_cluster_size');
 
 end
 
