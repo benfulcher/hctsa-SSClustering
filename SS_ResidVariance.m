@@ -40,6 +40,7 @@ hold on;
 plot([km.k],pcaResidVars);
 title('Residual Variance');
 xlabel('k');
+legend('K-medoids','PCA');
 
 save('resid_variance.mat','residVars','S','S_red','reducedDataMat');
 

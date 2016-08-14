@@ -8,7 +8,7 @@ if ~exist('kToUse','var')
     kToUse = 40;
 end
 if ~exist('op_km_repeats','var')
-    op_km_repeats = 50;
+    op_km_repeats = 100;
 end
 if ~exist('ts_km_repeats','var')
     ts_km_repeats = 500;
