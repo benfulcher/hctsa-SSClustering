@@ -1,3 +1,11 @@
+# Result text file 
+cluster_info.txt
+
+# Avoid uploading large MATLAB generated files
+*.mat
+*.asv
+
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -13,10 +21,6 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
-
- # Avoid uploading large MATLAB generated files
-*.mat
-*.asv
 
 # Windows shortcuts
 *.lnk

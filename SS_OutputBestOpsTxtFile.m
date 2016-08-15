@@ -10,6 +10,9 @@ fID = fopen(outTxtFileName,'w');
 fprintf(fID,['Output from kmedoids clustering (k = %i) followed by ',...
     'linkage clustering (corr_dist_threshold = %f)\n\n'],kmedoidsClusters.k,corr_dist_threshold);
 
+autoChosenOps = [];
+autoChosenIdxs = [];
+
 for i = 1:length(linkageClusters)
     dists = linkageClusters(i).memDists;
     mems = linkageClusters(i).memIdxs;
@@ -37,10 +40,15 @@ for i = 1:length(linkageClusters)
             sortedOps(j).Keywords);
     end
     
+    autoChosenOps = [autoChosenOps sortedOps(1)];
+    autoChosenIdxs = [autoChosenIdxs sortedMems(1)];
+
     fprintf(fID,'\n');
 end
 
 fclose(fID);
+
+save('auto_chosen_ops.mat','autoChosenOps','autoChosenIdxs');
 
 end
 

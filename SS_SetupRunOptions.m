@@ -2,16 +2,16 @@ function SS_SetupRunInfo( ks , kToUse , op_km_repeats , ts_km_repeats , ...
     inMatFileName , outTxtFileName , corr_dist_threshold , av_ts_cluster_size)
 
 if ~exist('ks','var')
-    ks = [5,7,10,20:20:100,200,500,1000];
+    ks = [3,7,10:20:100,200,500];
 end
 if ~exist('kToUse','var') 
-    kToUse = 40;
+    kToUse = 50;
 end
 if ~exist('op_km_repeats','var')
-    op_km_repeats = 100;
+    op_km_repeats = 300;
 end
 if ~exist('ts_km_repeats','var')
-    ts_km_repeats = 500;
+    ts_km_repeats = 1000;
 end
 if ~exist('inMatFileName','var')
     inMatFileName = 'HCTSA_new_data';
