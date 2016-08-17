@@ -2,13 +2,13 @@ function SS_SetupRunInfo( ks , kToUse , op_km_repeats , ts_km_repeats , ...
     inMatFileName , outTxtFileName , corr_dist_threshold , av_ts_cluster_size)
 
 if ~exist('ks','var')
-    ks = [3,7,10:20:100,200,500];
+    ks = [5042];
 end
 if ~exist('kToUse','var') 
-    kToUse = 50;
+    kToUse = 5042;
 end
 if ~exist('op_km_repeats','var')
-    op_km_repeats = 300;
+    op_km_repeats = 10;
 end
 if ~exist('ts_km_repeats','var')
     ts_km_repeats = 1000;
