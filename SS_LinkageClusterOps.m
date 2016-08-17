@@ -13,18 +13,16 @@ chosenOps = Operations(kmed.CCi);
 
 % First calculate number of linkage clusters required to group below threshold 
 distVec = 1- abs(1 - pdist(reducedDataMat','correlation'));
-Z = linkage(distVec,'complete');
-T = cluster(Z,'cutoff',corr_dist_threshold,'criterion','distance');
-nLinkageClusters = max(T);
 
-% Then use Ben's fancy function to plot it nicely
+% Cluster linkages using a cutoff value for minimum inter-cluster distance
 [distMat_cl,cluster_Groupi,ord]  = BF_ClusterDown(distVec,...
-    nLinkageClusters,'whatDistance','general','linkageMeth','complete');
+    'clusterThreshold',corr_dist_threshold,'whatDistance','general',...
+    'linkageMeth','complete');
 colormap(BF_getcmap('redyellowgreen',10));
 
 fprintf(['Linkage clustering reduced %i operations to %i groups using '...
     'a distance threshold of %f \n'],...
-    kmed.k, nLinkageClusters,corr_dist_threshold);
+    kmed.k, length(cluster_Groupi),corr_dist_threshold);
 
 opNames = {chosenOps.Name};
 orderedNames = opNames(ord);
