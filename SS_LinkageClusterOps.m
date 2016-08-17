@@ -11,7 +11,7 @@ kmed = km(kIdx);
 % Find best operations
 chosenOps = Operations(kmed.CCi);
 
-% First calculate number of linkage clusters required to group below threshold 
+% First calculate distance vector 
 distVec = 1- abs(1 - pdist(reducedDataMat','correlation'));
 
 % Cluster linkages using a cutoff value for minimum inter-cluster distance
