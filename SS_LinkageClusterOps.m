@@ -5,7 +5,6 @@ load('HCTSA_N.mat');
 load('clusters_kmedoids.mat');
 load('resid_variance.mat');
 
-
 kmed = km(kIdx);
 
 % Find best operations
@@ -17,8 +16,8 @@ distVec = 1- abs(1 - pdist(reducedDataMat','correlation'));
 % Cluster linkages using a cutoff value for minimum inter-cluster distance
 [distMat_cl,cluster_Groupi,ord]  = BF_ClusterDown(distVec,...
     'clusterThreshold',corr_dist_threshold,'whatDistance','general',...
-    'linkageMeth','complete');
-colormap(BF_getcmap('redyellowgreen',10));
+    'linkageMeth','average');
+colormap(BF_getcmap('redyellowblue',10));
 
 fprintf(['Linkage clustering reduced %i operations to %i groups using '...
     'a distance threshold of %.2f \n'],...

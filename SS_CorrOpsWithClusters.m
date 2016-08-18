@@ -7,9 +7,10 @@ load('linkage_clustered_ops');
 
 kmedoidsClusters = km(kIdx);
 
-allClusters = cluster_Groupi{1};
+allClusters = cluster_Groupi;
 
 fprintf('Calculating correlations of operations to their linkage clustered centres\n');
+
 for i = 1:length(allClusters)
     % Within linkage clusters take the mean of members to find cluster centre
     cluster = cell2mat(allClusters(i));
@@ -33,7 +34,7 @@ for i = 1:length(allClusters)
     linkageClusters(i).memDists = memDists;
 end
 
-save(strcat('linkage_clusters_with_member_corrs.mat'),'linkageClusters',...
+save('linkage_clusters_with_member_corrs.mat','linkageClusters',...
     'kmedoidsClusters');
 end
 

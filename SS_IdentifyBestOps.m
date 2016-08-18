@@ -26,11 +26,12 @@ for i = 1:length(linkageClusters)
     
     kmCentreOps = Operations(kmedoidsClusters.CCi(kmedCentres));
     kmCentreNames = {kmCentreOps.Name};
+    kmCentreKeys = {kmCentreOps.Keywords};
     
     % Print all centres associated with cluster
     fprintf(fID,'CLUSTER %i: ',i);
     for j = 1:length(kmCentreNames)
-        fprintf(fID,'%s , ',kmCentreNames{j}); 
+        fprintf(fID,'%s (%s), ',kmCentreNames{j},kmCentreKeys{j}); 
     end
     fprintf(fID,'\n');
     

@@ -5,7 +5,7 @@
 SS_SetupRunOptions;
 
 % Load your data matrix then normalise and filter it
-SS_NormaliseAndFilter;
+%SS_NormaliseAndFilter;
 
 % Enter values of K you want to calculate 
 % NB: The largest value of K will automatically be used for the linkage clustering etc
@@ -24,7 +24,7 @@ SS_LinkageClusterOps;
 SS_CorrOpsWithClusters;
 
 % Output final clusters to a text file
-SS_OutputBestOpsTxtFile;
+SS_IdentifyBestOps;
 
 % Cluster the time series in the reduced operation space to visualise
 % effectiveness of selected operations 
