@@ -25,8 +25,7 @@ fprintf(['Linkage clustering reduced %i operations to %i groups using '...
 
 opNames = {chosenOps.Name};
 orderedNames = opNames(ord);
-set(gca,'Ytick',1:kmed.k,'YtickLabel',orderedNames,'YTickLabelRotation',0,...
-    'TickLabelInterpreter','none');
+set(gca,'Ytick',1:kmed.k,'YtickLabel',orderedNames,'TickLabelInterpreter','none');
 
 % Save info regarding best operations
 save('linkage_clustered_ops.mat','kmed','distMat_cl','orderedNames',...
