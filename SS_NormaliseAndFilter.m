@@ -5,7 +5,7 @@ load('run_options.mat');
 load(strcat(inMatFileName,'.mat'));
 save('HCTSA.mat');
 
-TS_normalize('scaledRobustSigmoid',[0.8,1.0]);
+TS_normalize('scaledRobustSigmoid',[0.8,1]);
 
 % BUG IN TS_local_clear_remove...
 

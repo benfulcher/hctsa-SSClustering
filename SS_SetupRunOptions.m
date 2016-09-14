@@ -2,13 +2,13 @@ function SS_SetupRunInfo( ks , kToUse , op_km_repeats , ts_km_repeats , ...
     inMatFileName , outTxtFileName , corr_dist_threshold , av_ts_cluster_size)
 
 if ~exist('ks','var')
-    ks = [30];
+    ks = [200];
 end
 if ~exist('kToUse','var') 
-    kToUse = 30;
+    kToUse = 200;
 end
 if ~exist('op_km_repeats','var')
-    op_km_repeats = 300;
+    op_km_repeats = 2000;
 end
 if ~exist('ts_km_repeats','var')
     ts_km_repeats = 1000;
@@ -20,7 +20,7 @@ if ~exist('outTxtFileName','var')
     outTxtFileName = 'cluster_info.txt';
 end
 if ~exist('corr_dist_threshold','var')
-    corr_dist_threshold = 0.2;
+    corr_dist_threshold = 0.1;
 end
 if ~exist('av_ts_cluster_size','var')
     av_ts_cluster_size = 10;

@@ -11,12 +11,13 @@ kmed = km(kIdx);
 chosenOps = Operations(kmed.CCi);
 
 % First calculate distance vector 
-distVec = 1- abs(1 - pdist(reducedDataMat','correlation'));
+rawDistVec = pdist(reducedDataMat','correlation');
+distVec = 1- abs(1 - rawDistVec);
 
 % Cluster linkages using a cutoff value for minimum inter-cluster distance
 [distMat_cl,cluster_Groupi,ord]  = BF_ClusterDown(distVec,...
     'clusterThreshold',corr_dist_threshold,'whatDistance','general',...
-    'linkageMeth','average');
+    'linkageMeth','complete');
 colormap(BF_getcmap('redyellowblue',10));
 
 fprintf(['Linkage clustering reduced %i operations to %i groups using '...

@@ -15,8 +15,13 @@ for i = 1:length(allClusters)
     % Within linkage clusters take the mean of members to find cluster centre
     cluster = cell2mat(allClusters(i));
     kmedCentres = [];
+    
+    ref = TS_DataMat(:,kmedoidsClusters.CCi(cluster(1)));
     for j = 1:length(cluster)
-        kmedCentres = [kmedCentres TS_DataMat(:,kmedoidsClusters.CCi(cluster(j)))];
+        centreOpIdxJ = kmedoidsClusters.CCi(cluster(j));
+        centreOpJ = TS_DataMat(:,centreOpIdxJ);
+        sgn = sign(corr(centreOpJ,ref));
+        kmedCentres = [kmedCentres sgn*centreOpJ];
     end
     av = mean(kmedCentres,2);
     
@@ -25,13 +30,15 @@ for i = 1:length(allClusters)
     memDists = zeros(length(memIdxs),1);
     for j = 1:length(memIdxs)
         op = TS_DataMat(:,memIdxs(j));
-        memDists(j) = 1 - abs(corr(op,av));
+        sgn = sign(corr(op,ref));
+        memDists(j) = 1 - abs(corr(sgn*op,av));
     end
 
     linkageClusters(i).kmedCentres = cluster;
     linkageClusters(i).centre = av;
     linkageClusters(i).memIdxs = memIdxs;
     linkageClusters(i).memDists = memDists;
+    linkageClusters(i).memOps = Operations(memIdxs);
 end
 
 save('linkage_clusters_with_member_corrs.mat','linkageClusters',...

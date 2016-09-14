@@ -1,5 +1,7 @@
 # Result text file 
-cluster_info.txt
+cluster_info*.txt
+ts_clusters*.png
+ts_clusters_ims.zip
 
 # Avoid uploading large MATLAB generated files
 *.mat

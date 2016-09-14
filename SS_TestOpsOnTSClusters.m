@@ -31,3 +31,7 @@ for i = 1:numPlots
     title(sprintf('Cluster %i (%i time series)',i,length(series)));
 end
 
+% Save image
+fName = ['ts_clusters_',num2str(ks(kIdx)),'_',num2str(corr_dist_threshold),'.png'];
+set(gcf, 'Position', get(0, 'Screensize'));
+print(fName,'-dpng')
