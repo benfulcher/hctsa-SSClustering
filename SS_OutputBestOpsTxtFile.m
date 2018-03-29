@@ -1,4 +1,4 @@
-function [autoChosenOps,autoChosenIdxs] = SS_OutputBestOpsTxtFile(runParams,linkageClusters,kmedoidsClusters)
+function [autoChosenOps,autoChosenIDs] = SS_OutputBestOpsTxtFile(runParams,linkageClusters,kmedoidsClusters)
 
 % Load normalized data:
 load(runParams.normMatFile,'Operations');
@@ -46,15 +46,19 @@ for i = 1:length(linkageClusters)
     autoChosenOps{i} = sortedOps(1);
     fprintf(fID,'\n');
 end
-
 fclose(fID);
+
+%-------------------------------------------------------------------------------
+% Take feature IDs:
+autoChosenIDs = cellfun(@(x)x.ID,autoChosenOps);
 
 %-------------------------------------------------------------------------------
 % Save info to a .mat file
 saveToMatFile = true;
 if saveToMatFile
-    autoChosenIDs = cellfun(@(x)x.ID,autoChosenOps);
-    save([runParams.outFileNameBase,'.mat'],'autoChosenOps','autoChosenIDs');
+    matFileName = [runParams.outFileNameBase,'.mat'];
+    save(matFileName,'autoChosenOps','autoChosenIDs');
+    fprintf(1,'Saved reduced operation info to %s\n',matFileName);
 end
 
 end
