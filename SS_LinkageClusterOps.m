@@ -11,7 +11,7 @@ end
 load(runParams.normMatFile,'TS_DataMat','Operations');
 
 %===============================================================================
-kmed = km(kIdx);
+kmed = km(runParams.kIdx);
 
 % Find representative features:
 chosenOps = Operations(kmed.CCi);
@@ -27,26 +27,28 @@ end
 %-------------------------------------------------------------------------------
 % Cluster linkages using a cutoff value for minimum inter-cluster distance
 [distMat_cl,cluster_Groupi,ord] = BF_ClusterDown(distVec,...
-                'clusterThreshold',runParams.corr_dist_threshold,...
+                'clusterThreshold',runParams.corrDistThreshold,...
                 'whatDistance','general',...
                 'linkageMeth',runParams.linkageMeth);
+
+% Information about the most representative operations:
+opNames = {chosenOps.Name};
+orderedNames = opNames(ord);
+
 % Customize plot:
 ax = gca;
 ax.YTick = 1:kmed.k;
 ax.YTickLabel = orderedNames;
 ax.TickLabelInterpreter = 'none';
-colormap(BF_getcmap('redyellowblue',10,false)); % custom colormap
+% colormap(BF_getcmap('redyellowblue',10,false)); % custom colormap
 
 fprintf(['Linkage clustering reduced %u operations to %u groups using '...
         'a distance threshold of %.2f\n'],kmed.k,length(cluster_Groupi),...
-        runParams.corr_dist_threshold);
+            runParams.corrDistThreshold);
 
-
-% Save info regarding the most representative operations:
-opNames = {chosenOps.Name};
-orderedNames = opNames(ord);
 
 %-------------------------------------------------------------------------------
+saveToFile = false;
 if saveToFile
     save('linkage_clustered_ops.mat','kmed','distMat_cl','orderedNames',...
         'ord','cluster_Groupi');

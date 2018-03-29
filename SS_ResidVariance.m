@@ -35,7 +35,7 @@ for i = 1:numSolutions
     % abs used to stop rounding errors giving -ve values
     pcaResidVars(i) = abs(1 - (pcaR^2));
 
-    if i == kIdx
+    if i == runParams.kIdx
         reducedDataMat = reducedDataMatI;
         S_red = S_redI;
     end
@@ -44,8 +44,8 @@ end
 %-------------------------------------------------------------------------------
 % Plot:
 f = figure('color','w'); hold on;
-plot([km.k],residVars);
-plot([km.k],pcaResidVars);
+plot([km.k],residVars,'o-');
+plot([km.k],pcaResidVars,'o-');
 title('Residual Variance');
 xlabel('k');
 legend('k-medoids','PCA');
