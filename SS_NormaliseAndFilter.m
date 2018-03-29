@@ -5,10 +5,8 @@ end
 
 %-------------------------------------------------------------------------------
 % Normalize the data
-normFunction = 'scaledRobustSigmoid';
-filterOptions = [0.8,1];
 classVarFilter = false;
-outputFileName = TS_normalize(normFunction,filterOptions,runParams.inMatFileName,classVarFilter);
+outputFileName = TS_normalize(runParams.normFunction,runParams.filterOptions,runParams.inMatFileName,classVarFilter);
 runParams.normMatFile = outputFileName;
 
 if doFilter

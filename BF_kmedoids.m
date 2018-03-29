@@ -1,4 +1,4 @@
-function [CCi, Cass, err, Cord, D] = BF_kmedoids(D, k, maxIter, nrepeats, errmeas, killer)
+function [CCi, Cass, err, Cord, D] = BF_kmedoids(D, k, maxIter, numRepeats, errmeas, killer)
 % Ben Fulcher 14/1/2011 -- want to input *just* a distance matrix, so no
 % distance calculations are performed on the fly.
 
@@ -10,7 +10,7 @@ function [CCi, Cass, err, Cord, D] = BF_kmedoids(D, k, maxIter, nrepeats, errmea
 %       'pdist')
 %       k - number of clusters
 %       maxIter - Maximum number of iterations
-%       nrepeats - number of times to repeat the algorithm (with different
+%       numRepeats - number of times to repeat the algorithm (with different
 %               random initial cluster allocations)
 %       errmeas [opt] - custom error measure
 %
@@ -21,7 +21,6 @@ function [CCi, Cass, err, Cord, D] = BF_kmedoids(D, k, maxIter, nrepeats, errmea
 %       Cord [opt] - k-component cell of cluster indicies, ordered in increasing
 %           distance from centroids (first member of each cell component)
 % ------------------------------------------
-
 % Ben Fulcher 27/1/2011 added killer input -- does preliminary pruning of
 %                       zero distances, adds them back at the end.
 
@@ -36,8 +35,8 @@ if nargin < 3 || isempty(maxIter)
     disp('I''m only doing 10 iterations. Don''t get angry -- you should have specified.')
     maxIter = 10;
 end
-if nargin < 4 || isempty(nrepeats)
-    nrepeats = 10; % repeat to try and improve error
+if nargin < 4 || isempty(numRepeats)
+    numRepeats = 10; % repeat to try and improve error
 end
 if nargin < 5 || isempty(errmeas)
     errmeas = 'sum'; % default: sum of distances to centroid
@@ -94,12 +93,12 @@ end
 % preliminaries
 l = length(D); % number of objects to cluster
 
-% for nrepeats
-CCiN = zeros(nrepeats,k);
-errN = zeros(nrepeats,1); % sum of in-cluster distances (or whatever)
+% for numRepeats
+CCiN = zeros(numRepeats,k);
+errN = zeros(numRepeats,1); % sum of in-cluster distances (or whatever)
 
 tic
-for N = 1:nrepeats
+for N = 1:numRepeats
     CCis = zeros(maxIter+1,k); % store cluster center indicies
 %     errs = zeros(maxIter,k); % store errors
 
@@ -181,10 +180,10 @@ for N = 1:nrepeats
     if i==maxIter, disp('DIDN''T CONVERGE :(');
     else
         if N>1 && errN(N) == min(errN(1:N)) % new minimum error -- best yet
-            disp(['[' num2str(N) '/' num2str(nrepeats) '] Converged at ' num2str(i) '/' num2str(maxIter) ' -- Err = '...
+            disp(['[' num2str(N) '/' num2str(numRepeats) '] Converged at ' num2str(i) '/' num2str(maxIter) ' -- Err = '...
                 num2str(errN(N)) ' (' num2str(errN(N)-min(errN(1:N-1))) ')']);
         else % worse clustering than best so far -- by how much?
-            disp(['[' num2str(N) '/' num2str(nrepeats) '] Converged at ' num2str(i) '/' num2str(maxIter) ' -- Err = '...
+            disp(['[' num2str(N) '/' num2str(numRepeats) '] Converged at ' num2str(i) '/' num2str(maxIter) ' -- Err = '...
                 num2str(errN(N)) ' (+' num2str(errN(N)-min(errN(1:N))) ')']);
         end
     end
@@ -234,7 +233,7 @@ if nargout>=4
     end
 end
 
-fprintf(1,'**BF_kmedoids took %s  to compute %u iterations on %u objects\n',...
-                BF_thetime(toc),nrepeats,l)
+fprintf(1,'**BF_kmedoids took %s to compute %u iterations on %u objects\n',...
+                BF_thetime(toc),numRepeats,l)
 
 end
