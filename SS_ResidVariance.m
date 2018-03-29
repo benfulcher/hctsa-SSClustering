@@ -1,22 +1,28 @@
-function SS_ResidVariance
+function [residVars,S,S_red,reducedDataMat] = SS_ResidVariance(runParams,km,saveToFile)
 % PLOT RESIDUAL VARIANCE AS FUNCTION OF K
 
-load('run_options.mat');
-load('clusters_kmedoids.mat');
-load('HCTSA_N.mat');
+if nargin < 2
+    fprintf(1,'Loading in k-medoids clustering info from file\n');
+    load('clusters_kmedoids.mat','km');
+end
 
-fprintf('Computing pairwise Euclidian distances for TS using all operations\n');
-residVars = [];
-pcaResidVars = [];
+% Load the normalized/filtered data matrix:
+load(runParams.normMatFile,'TS_DataMat');
 
-S = pdist(TS_DataMat);
+%-------------------------------------------------------------------------------
+fprintf('Computing pairwise Euclidian distances for TS using all features.\n');
+
+S = pdist(TS_DataMat,'Euclidean');
 [pcaM score] = pca(TS_DataMat);
 
-% Loop through each
+%-------------------------------------------------------------------------------
+% Loop through each k-medoids clustering solution:
+residVars = [];
+pcaResidVars = [];
 for i = 1:size(km,2)
-    kmed = km(i);    
+    kmed = km(i);
     fprintf('Computing residual variance for k = %i\n',kmed.k);
-    
+
     reducedDataMatI = TS_DataMat(:,kmed.CCi);
     S_redI = pdist(reducedDataMatI);
     R = corr2(S,S_redI);
@@ -26,23 +32,28 @@ for i = 1:size(km,2)
     S_pcaRed = pdist(pcaRedMat);
     pcaR = corr2(S,S_pcaRed);
     % abs used to stop rounding errors giving -ve values
-    pcaResidVars = [pcaResidVars , abs(1 - (pcaR^2))];
-    
+    pcaResidVars = [pcaResidVars,abs(1 - (pcaR^2))];
+
     if i == kIdx
         reducedDataMat = reducedDataMatI;
         S_red = S_redI;
     end
 end
 
-figure;
+%-------------------------------------------------------------------------------
+% Plot:
+f = figure('color','w'); hold on;
 plot([km.k],residVars);
-hold on;
 plot([km.k],pcaResidVars);
 title('Residual Variance');
 xlabel('k');
-legend('K-medoids','PCA');
+legend('k-medoids','PCA');
 
-save('resid_variance.mat','residVars','S','S_red','reducedDataMat');
-
+%-------------------------------------------------------------------------------
+% Save to file:
+if saveToFile
+    save('resid_variance.mat','residVars','S','S_red','reducedDataMat');
+    fprintf(1,'Saved residual variance results to resid_variance.mat\n');
 end
 
+end

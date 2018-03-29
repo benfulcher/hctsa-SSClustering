@@ -31,17 +31,16 @@ for i = 1:length(runParams.ks)
 
         outTxtFileName = sprintf('cluster_info_%u_%.2f.txt',kToUse,runparams.corr_dist_threshold);
 
-        % Set up default run info file
-        SS_SetupRunOptions(ks,kToUse,500,2000,'HCTSA_new_data',outTxtFileName,corr_dist_threshold,10)
+        % Calculates pairwise distances between time series for original and
+        % reduced feature sets, uses this to compute residual variance
+        saveToFile = false;
+        [residVars,S,S_red,reducedDataMat] = SS_ResidVariance(runParams,km,saveToFile);
 
-        % Calculates residual variance for above clusters
-        SS_ResidVariance;
-
-        % Calculates time series distances for original and reduced operation sets
-        SS_TSDistances;
+        % Plots time-series distances for original and reduced operation sets
+        SS_TSDistances(S,S_red);
 
         % Cluster K-medoids centres using linkage clustering
-        SS_LinkageClusterOps;
+        SS_LinkageClusterOps(runParams);
 
         % Calculate all operation correlations with their cluster centres
         SS_CorrOpsWithClusters;
@@ -53,7 +52,5 @@ for i = 1:length(runParams.ks)
         % effectiveness of selected operations
         SS_TestOpsOnTSClusters;
 
-        % Close all figures
-        %close all;
     end
 end

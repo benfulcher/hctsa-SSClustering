@@ -4,8 +4,11 @@ load(runParams.normMatFile,'TS_DataMat');
 
 % Cluster operations using correlation distances and k-medoids clustering
 fprintf('Computing pairwise correlation distances for operations\n');
-D = squareform(pdist(TS_DataMat','corr'));
-D = 1-abs(1-D);
+switch runParams.opDist
+    case 'abscorr'
+        D = squareform(pdist(TS_DataMat','corr'));
+        D = 1-abs(1-D);
+end
 
 % Compute k-medoids for each k in ks
 maxIter = 100;

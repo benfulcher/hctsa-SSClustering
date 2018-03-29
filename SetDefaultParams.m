@@ -2,35 +2,34 @@ function runParams = SetDefaultParams()
 % Set default parameters
 %-------------------------------------------------------------------------------
 
+runParams = struct();
 
 % Input/output:
-inMatFileName = 'HCTSA_new_data.mat'; % Filename of data to load in
+runParams.inMatFileName = 'HCTSA_new_data.mat'; % Filename of data to load in
 
 % K-medoids clustering:
-ks = [200]; % vector of k values (number of k-medoids clusters) to loop over
-% kToUse = 200;
-op_km_repeats = 2000;
-ts_km_repeats = 1000;
+runParams.ks = [200]; % vector of k values (number of k-medoids clusters) to loop over
+runParams.kToUse = 200; % k-value to run with...?
 
-av_ts_cluster_size = 10;
+runParams.op_km_repeats = 2000;
+runParams.ts_km_repeats = 1000;
 
-corrThresholds = [0.1,0.2];
+runParams.av_ts_cluster_size = 10;
+
+runParams.corrThresholds = [0.1,0.2];
+
+% K-medoids clustering:
+runParams.opDist = 'abscorr'; % measure distances between pairs of features
+
+% Linkage clustering after k-medoids:
+runParams.linkageMeth = 'complete';
 
 %-------------------------------------------------------------------------------
-kIdx = find(ks == kToUse);
+runParams.kIdx = find(ks == kToUse);
 if isempty(kIdx)
     fprintf('Could not find K = %u in ks - setting kToUse to %u',...
             kToUse,ks(length(ks)));
-    kIdx = length(ks);
-end
-
-%-------------------------------------------------------------------------------
-paramNames = {'ks','kIdx','op_km_repeats','ts_km_repeats','inMatFileName',...
-                'av_ts_cluster_size','corrThresholds'};
-numParams = length(paramNames);
-runParams = struct();
-for i = 1:numParams
-    runParams.(paramNames{i}) = eval(paramNames{i});
+    runParams.kIdx = length(ks);
 end
 
 end
