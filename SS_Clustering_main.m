@@ -9,6 +9,7 @@ rng(0);
 %-------------------------------------------------------------------------------
 % Set up default run info file
 runParams = SetDefaultParams();
+runParams.inMatFileName = 'HCTSA_rightCTX.mat';
 % <<Can alter default parameters manually here>>
 
 %-------------------------------------------------------------------------------
@@ -24,9 +25,9 @@ for i = 1:length(runParams.ks)
     kToUse = runParams.ks(i);
     fprintf(1,'[%u/%u]k = %u\n',i,length(runParams.ks),kToUse);
     for j = 1:length(runParams.corrThresholds)
-        runParams.corr_dist_threshold = runParams.corrThresholds(j);
+        runParams.corrDistThreshold = runParams.corrThresholds(j);
         fprintf(1,'  [%u/%u]corrThresh = %.2f\n',j,length(runParams.corrThresholds),...
-                                runParams.corr_dist_threshold);
+                                runParams.corrDistThreshold);
 
         % Calculates pairwise distances between time series for original and
         % reduced feature sets, uses this to compute residual variance
@@ -43,12 +44,11 @@ for i = 1:length(runParams.ks)
         [linkageClusters,kmedoidsClusters] = SS_CorrOpsWithClusters(runParams,km,cluster_Groupi);
 
         % Output final clusters to a text file
-        runParams.outTxtFileName = sprintf('cluster_info_%u_%.2f.txt',kToUse,runParams.corr_dist_threshold);
-        SS_OutputBestOpsTxtFile(runParams,linkageClusters,kmedoidsClusters);
+        runParams.outFileNameBase = sprintf('clusterInfo_%s_%u_%.2f',runParams.inMatFileName(1:end-4),kToUse,runParams.corrDistThreshold);
+        [autoChosenOps,autoChosenIDs] = SS_OutputBestOpsTxtFile(runParams,linkageClusters,kmedoidsClusters);
 
         % Cluster the time series in the reduced operation space to visualise
         % effectiveness of selected operations
         SS_TestOpsOnTSClusters;
-
     end
 end

@@ -1,20 +1,20 @@
-function [CCi, Cass, err, Cord, D] = BF_kmedoids(D, k, maxIter, numRepeats, errmeas, killer)
+function [CCi, Cass, err, Cord, D] = BF_kmedoids(D, k, maxIter, numRepeats, errMeas, killer)ure
 % Ben Fulcher 14/1/2011 -- want to input *just* a distance matrix, so no
 % distance calculations are performed on the fly.
 
-% Usage
+% Usage:
 % [IDX,C,cost] = kmedoid(data, NC, maxIter, [init_cluster])
 %
-% Input :
+% Inputs:
 %       D: square distance matrix (e.g., use squareform on output of
 %       'pdist')
 %       k - number of clusters
 %       maxIter - Maximum number of iterations
 %       numRepeats - number of times to repeat the algorithm (with different
 %               random initial cluster allocations)
-%       errmeas [opt] - custom error measure
+%       errMeas [opt] - custom error measureure
 %
-% Output :
+% Outputs:
 %       CCi - indicies of cluster centre data points
 %       CCass - assignments of each data point to a cluster (indicies of CCi)
 %       err - sum of point-centroid distances for each cluster
@@ -38,8 +38,8 @@ end
 if nargin < 4 || isempty(numRepeats)
     numRepeats = 10; % repeat to try and improve error
 end
-if nargin < 5 || isempty(errmeas)
-    errmeas = 'sum'; % default: sum of distances to centroid
+if nargin < 5 || isempty(errMeas)ure
+    errMeas = 'sum'; % default: sum of distances to centroidure
 end
 if nargin < 6 || isempty(killer)
     killer = 1;
@@ -135,7 +135,7 @@ for N = 1:numRepeats
     CCiN(N,:) = CCis(end,:);
 
     % now compute some error function associated with this clustering:
-    switch errmeas
+    switch errMeasure
         case 'sum'
             % minimize sum of within-cluster distances
             tmperrs = zeros(k,1);
@@ -177,15 +177,13 @@ for N = 1:numRepeats
     end
 
 %     errN(N,:) = errs(end,:);
-    if i==maxIter, disp('DIDN''T CONVERGE :(');
-    else
-        if N>1 && errN(N) == min(errN(1:N)) % new minimum error -- best yet
-            disp(['[' num2str(N) '/' num2str(numRepeats) '] Converged at ' num2str(i) '/' num2str(maxIter) ' -- Err = '...
-                num2str(errN(N)) ' (' num2str(errN(N)-min(errN(1:N-1))) ')']);
-        else % worse clustering than best so far -- by how much?
-            disp(['[' num2str(N) '/' num2str(numRepeats) '] Converged at ' num2str(i) '/' num2str(maxIter) ' -- Err = '...
-                num2str(errN(N)) ' (+' num2str(errN(N)-min(errN(1:N))) ')']);
-        end
+    if i==maxIter
+        warning('[%u/%u] DIDN''T CONVERGE :(',N,numRepeats);
+    end
+    if N > 1 && errN(N) == min(errN(1:N)) % new minimum error -- best yet
+        fprintf(1,'**[%u/%u]** Converged at %u/%u -- Err = %.3f (%.3f) \n',N,numRepeats,i,maxIter,errN(N),errN(N)-min(errN(1:N-1)));
+    else % worse clustering than best so far -- by how much?
+        fprintf(1,'[%u/%u] Converged at %u/%u -- Err = %.3f (+%.3f) \n',N,numRepeats,i,maxIter,errN(N),errN(N)-min(errN(1:N-1)));
     end
 end
 
@@ -196,18 +194,18 @@ if N==1
     CCi = CCiN(1,:);
     err = errN(1,:);
 else
-    % which repeat had minimum error
+    % Which repeat had minimum error?:
     sumerrN = sum(errN,2);
-    [~,thebest] = min(sumerrN);
-    CCi = CCiN(thebest,:);
-    err = errN(thebest,:);
+    [~,theBest] = min(sumerrN);
+    CCi = CCiN(theBest,:);
+    err = errN(theBest,:);
 end
 
-% add initially-deleted d=0 links if nkill>0
+% Add initially-deleted d=0 links if nkill>0
 if nkill > 0
     % CCi actually indicies of ikeep
     CCi = ikeep(CCi);
-    % need to assign based on distances of original points (D0)
+    % Need to assign based on distances of original points (D0)
     % to chosen cluster centres, in fact all the rest of the analysis
     % should be on D0 with the mapped CCis:
     D = D0;
@@ -216,7 +214,7 @@ end
 % Assign to clusters using best partition:
 [~,Cass] = min(D(CCi,:)); % minimum distance from each of the k cluster centers
 
-% make sure each cluster centre is in its cluster
+% Ensure each cluster centre is in its cluster
 if ~all(Cass(CCi) == 1:k);
     % might actually want to disallow these clusterings
     disp('reassigning ambiguous/redundant clustering');
@@ -233,7 +231,7 @@ if nargout>=4
     end
 end
 
-fprintf(1,'**BF_kmedoids took %s to compute %u iterations on %u objects\n',...
-                BF_thetime(toc),numRepeats,l)
+fprintf(1,'**BF_kmedoids took %s to compute %u iterations on %u objects (optimum solution at run %u)\n',...
+                BF_thetime(toc),numRepeats,l,theBest)
 
 end

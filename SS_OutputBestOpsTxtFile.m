@@ -5,15 +5,14 @@ load(runParams.normMatFile,'Operations');
 
 %-------------------------------------------------------------------------------
 fprintf('Saving clustering information to %s \n',runParams.outTxtFileName);
-fID = fopen(runParams.outTxtFileName,'w');
+fID = fopen([runParams.outFileNameBase,'.txt'],'w');
 fprintf(fID,['Output from kmedoids clustering (k = %u) followed by ',...
-    'linkage clustering (corr_dist_threshold = %f)\n\n'],...
-    kmedoidsClusters.k,runParams.corr_dist_threshold);
+    'linkage clustering (threshold = %.2f)\n\n'],...
+    kmedoidsClusters.k,runParams.corrDistThreshold);
 
 %-------------------------------------------------------------------------------
 numLinkageClusters = length(linkageClusters);
 autoChosenOps = cell(numLinkageClusters,1);
-autoChosenIdxs = zeros(numLinkageClusters,1);
 
 for i = 1:length(linkageClusters)
     dists = linkageClusters(i).memDists;
@@ -30,14 +29,14 @@ for i = 1:length(linkageClusters)
     kmCentreNames = {kmCentreOps.Name};
     kmCentreKeys = {kmCentreOps.Keywords};
 
-    % Write cluster centres
+    % Write cluster centres:
     fprintf(fID,'CLUSTER %u: ',i);
     for j = 1:length(kmCentreNames)
         fprintf(fID,'%s (%s), ',kmCentreNames{j},kmCentreKeys{j});
     end
     fprintf(fID,'\n');
 
-    % Write top 10 operations highly correlated with cluster centre
+    % Write top 10 operations highly correlated with cluster centre:
     maxList = 10;
     for j = 1:min(length(sortedOps),maxList)
         fprintf(fID,'(%f) %s - %s\n',1-sortedDists(j),sortedOps(j).Name,...
@@ -45,13 +44,17 @@ for i = 1:length(linkageClusters)
     end
 
     autoChosenOps{i} = sortedOps(1);
-    autoChosenIdxs(i) = sortedMems(1);
-
     fprintf(fID,'\n');
 end
 
 fclose(fID);
 
-% save('auto_chosen_ops.mat','autoChosenOps','autoChosenIdxs');
+%-------------------------------------------------------------------------------
+% Save info to a .mat file
+saveToMatFile = true;
+if saveToMatFile
+    autoChosenIDs = cellfun(@(x)x.ID,autoChosenOps);
+    save([runParams.outFileNameBase,'.mat'],'autoChosenOps','autoChosenIDs');
+end
 
 end

@@ -1,12 +1,14 @@
 function km = SS_ClusterKMedoids(runParams)
 
 load(runParams.normMatFile,'TS_DataMat');
+numFeatures = size(TS_DataMat,2);
 
 % Cluster operations using correlation distances and k-medoids clustering
-fprintf('Computing pairwise %s distances between %u operations\n',runParams.opDist,size(TS_DataMat,2));
+fprintf('Computing pairwise %s distances between %u operations\n',runParams.opDist,numFeatures);
 switch runParams.opDist
     case 'abscorr'
         D = squareform(pdist(TS_DataMat','corr'));
+        % Convert correlations to absolute correlation distances:
         D = 1-abs(1-D);
 end
 
