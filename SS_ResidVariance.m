@@ -12,27 +12,28 @@ load(runParams.normMatFile,'TS_DataMat');
 %-------------------------------------------------------------------------------
 fprintf('Computing pairwise Euclidian distances for TS using all features.\n');
 
-S = pdist(TS_DataMat,'Euclidean');
-[pcaM score] = pca(TS_DataMat);
+S = pdist(TS_DataMat,runParams.tsDist);
+[pcaM,score] = pca(TS_DataMat);
 
 %-------------------------------------------------------------------------------
 % Loop through each k-medoids clustering solution:
-residVars = [];
-pcaResidVars = [];
-for i = 1:size(km,2)
+numSolutions = length(km);
+residVars = zeros(numSolutions,1);
+pcaResidVars = zeros(numSolutions,1);
+for i = 1:numSolutions
     kmed = km(i);
-    fprintf('Computing residual variance for k = %i\n',kmed.k);
+    fprintf('Computing residual variance for k = %u\n',kmed.k);
 
     reducedDataMatI = TS_DataMat(:,kmed.CCi);
     S_redI = pdist(reducedDataMatI);
     R = corr2(S,S_redI);
-    residVars = [residVars , 1 - (R^2)];
+    residVars(i) = 1 - R^2;
 
     pcaRedMat = score(:,1:min(kmed.k,size(score,2)));
     S_pcaRed = pdist(pcaRedMat);
     pcaR = corr2(S,S_pcaRed);
     % abs used to stop rounding errors giving -ve values
-    pcaResidVars = [pcaResidVars,abs(1 - (pcaR^2))];
+    pcaResidVars(i) = abs(1 - (pcaR^2));
 
     if i == kIdx
         reducedDataMat = reducedDataMatI;

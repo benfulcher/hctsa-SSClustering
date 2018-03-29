@@ -16,4 +16,4 @@ Save your dataset in the standard HCTSA format (i.e., as `HCTSA.mat`).
 To start the analysis run the code from `SS_Clustering_main`
 
   - The separate functions can be used to reproduce individual steps separately
-  - However if changing an important parameter (e.g. K for the k-medoids method) __it is recommended to re-run the whole `SS_Clustering_main` script__ to ensure all saved files are in sync.
+  - However if changing an important parameter (e.g., k for the k-medoids method) __it is recommended to re-run the whole `SS_Clustering_main` script__ to ensure all saved files are in sync.

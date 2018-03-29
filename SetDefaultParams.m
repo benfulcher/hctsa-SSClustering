@@ -2,34 +2,33 @@ function runParams = SetDefaultParams()
 % Set default parameters
 %-------------------------------------------------------------------------------
 
+% Store all relevant parameters in the runParams structure:
 runParams = struct();
 
 % Input/output:
-runParams.inMatFileName = 'HCTSA_new_data.mat'; % Filename of data to load in
+runParams.inMatFileName = 'HCTSA.mat'; % Filename of data to load in
 
-% K-medoids clustering:
+% k-medoids clustering:
 runParams.ks = [200]; % vector of k values (number of k-medoids clusters) to loop over
 runParams.kToUse = 200; % k-value to run with...?
-
-runParams.op_km_repeats = 2000;
-runParams.ts_km_repeats = 1000;
-
-runParams.av_ts_cluster_size = 10;
-
-runParams.corrThresholds = [0.1,0.2];
-
-% K-medoids clustering:
+runParams.corrThresholds = [0.1]; % [0.1,0.2]
 runParams.opDist = 'abscorr'; % measure distances between pairs of features
+runParams.tsDist = 'euclidean'; % measure distances between pairs of time series
 
 % Linkage clustering after k-medoids:
 runParams.linkageMeth = 'complete';
 
 %-------------------------------------------------------------------------------
-runParams.kIdx = find(ks == kToUse);
-if isempty(kIdx)
+runParams.op_km_repeats = 2000;
+runParams.ts_km_repeats = 1000;
+runParams.av_ts_cluster_size = 10;
+
+%-------------------------------------------------------------------------------
+runParams.kIdx = find(runParams.ks == runParams.kToUse);
+if isempty(runParams.kIdx)
     fprintf('Could not find K = %u in ks - setting kToUse to %u',...
-            kToUse,ks(length(ks)));
-    runParams.kIdx = length(ks);
+            runParams.kToUse,runParams.ks(length(runParams.ks)));
+    runParams.kIdx = length(runParams.ks);
 end
 
 end
