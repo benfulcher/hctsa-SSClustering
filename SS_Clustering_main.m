@@ -17,7 +17,6 @@ doFilter = false;
 runParams = SS_NormaliseAndFilter(runParams,doFilter);
 
 %-------------------------------------------------------------------------------
-% Enter values of K you want to calculate
 % NB: The largest value of K will automatically be used for the linkage clustering etc
 km = SS_ClusterKMedoids(runParams);
 
@@ -36,17 +35,17 @@ for i = 1:length(runParams.ks)
         saveToFile = false;
         [residVars,S,S_red,reducedDataMat] = SS_ResidVariance(runParams,km,saveToFile);
 
-        % Plots time-series distances for original and reduced operation sets
+        % Plot time-series distances for original and reduced operation sets:
         SS_TSDistances(S,S_red);
 
-        % Cluster K-medoids centres using linkage clustering
-        SS_LinkageClusterOps(runParams);
+        % Cluster k-medoids-clustered reduced features using linkage clustering to ensure ~independence:
+        [distMat_cl,cluster_Groupi,ord,orderedNames,kmed] = SS_LinkageClusterOps(runParams,km,reducedDataMat);
 
-        % Calculate all operation correlations with their cluster centres
-        SS_CorrOpsWithClusters;
+        % Calculate all operation correlations with their cluster centres:
+        [linkageClusters,kmedoidsClusters] = SS_CorrOpsWithClusters(runParams,km,cluster_Groupi);
 
         % Output final clusters to a text file
-        SS_IdentifyBestOps;
+        SS_OutputBestOpsTxtFile(runParams,linkageClusters,kmedoidsClusters);
 
         % Cluster the time series in the reduced operation space to visualise
         % effectiveness of selected operations

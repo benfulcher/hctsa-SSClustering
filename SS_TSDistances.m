@@ -9,9 +9,8 @@ end
 
 %-------------------------------------------------------------------------------
 f = figure('color','w');
-figure;
 
-% Full operation space
+% Full feature space
 colormap(BF_getcmap('redyellowgreen',10))
 ax = subplot(1,2,1);
 S_sqr = squareform(S);
@@ -24,7 +23,7 @@ ax.XTick = [];
 % Freeze color axis for second plot to have same scale
 caxis manual;
 
-% Reduced oeration space
+% Reduced feature space
 ax = subplot(1,2,2);
 S_red_sqr = squareform(S_red);
 S_red_order = BF_ClusterReorder(S_red_sqr);

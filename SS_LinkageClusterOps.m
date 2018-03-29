@@ -1,4 +1,4 @@
-function [] = SS_LinkageClusterOps(runParams,km,reducedDataMat)
+function [distMat_cl,cluster_Groupi,ord,orderedNames,kmed] = SS_LinkageClusterOps(runParams,km,reducedDataMat)
 
 % km from SS_ClusterKMedoids
 % reducedDataMat from SS_ResidVariance
@@ -8,7 +8,7 @@ if nargin < 3
 end
 
 % Load in normalized hctsa data
-load(runParams.normMatFile,'TS_DataMat');
+load(runParams.normMatFile,'TS_DataMat','Operations');
 
 %===============================================================================
 kmed = km(kIdx);

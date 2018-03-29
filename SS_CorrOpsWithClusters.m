@@ -1,11 +1,9 @@
-function SS_CorrOpsWithClusters
+function [linkageClusters,kmedoidsClusters] = SS_CorrOpsWithClusters(runParams,km,cluster_Groupi)
 
-load('run_options.mat');
-load('HCTSA_N.mat');
-load('clusters_kmedoids.mat');
-load('linkage_clustered_ops');
+load(runParams.normMatFile,'TS_DataMat','Operations');
+% load('linkage_clustered_ops');
 
-kmedoidsClusters = km(kIdx);
+kmedoidsClusters = km(runParams.kIdx);
 
 allClusters = cluster_Groupi;
 
@@ -15,16 +13,16 @@ for i = 1:length(allClusters)
     % Within linkage clusters take the mean of members to find cluster centre
     cluster = cell2mat(allClusters(i));
     kmedCentres = [];
-    
+
     ref = TS_DataMat(:,kmedoidsClusters.CCi(cluster(1)));
     for j = 1:length(cluster)
         centreOpIdxJ = kmedoidsClusters.CCi(cluster(j));
         centreOpJ = TS_DataMat(:,centreOpIdxJ);
         sgn = sign(corr(centreOpJ,ref));
-        kmedCentres = [kmedCentres sgn*centreOpJ];
+        kmedCentres = [kmedCentres,sgn*centreOpJ];
     end
     av = mean(kmedCentres,2);
-    
+
     % Find correlation distance of each cluster member to cluster centre
     memIdxs = find(ismember(kmedoidsClusters.Cass,cluster))';
     memDists = zeros(length(memIdxs),1);
@@ -41,7 +39,9 @@ for i = 1:length(allClusters)
     linkageClusters(i).memOps = Operations(memIdxs);
 end
 
-save('linkage_clusters_with_member_corrs.mat','linkageClusters',...
-    'kmedoidsClusters');
+saveToFile = false;
+if saveToFile
+    save('linkage_clusters_with_member_corrs.mat','linkageClusters',...
+        'kmedoidsClusters');
+    end
 end
-
