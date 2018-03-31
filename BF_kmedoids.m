@@ -1,4 +1,4 @@
-function [CCi, Cass, err, Cord, D] = BF_kmedoids(D, k, maxIter, numRepeats, errMeas, killer)ure
+function [CCi,Cass,err,Cord,D] = BF_kmedoids(D,k,maxIter,numRepeats,errMeas,killer)
 % Ben Fulcher 14/1/2011 -- want to input *just* a distance matrix, so no
 % distance calculations are performed on the fly.
 
@@ -12,7 +12,7 @@ function [CCi, Cass, err, Cord, D] = BF_kmedoids(D, k, maxIter, numRepeats, errM
 %       maxIter - Maximum number of iterations
 %       numRepeats - number of times to repeat the algorithm (with different
 %               random initial cluster allocations)
-%       errMeas [opt] - custom error measureure
+%       errMeas [opt] - custom error measure
 %
 % Outputs:
 %       CCi - indicies of cluster centre data points
@@ -38,8 +38,8 @@ end
 if nargin < 4 || isempty(numRepeats)
     numRepeats = 10; % repeat to try and improve error
 end
-if nargin < 5 || isempty(errMeas)ure
-    errMeas = 'sum'; % default: sum of distances to centroidure
+if nargin < 5 || isempty(errMeas)
+    errMeas = 'sum'; % default: sum of distances to centroid
 end
 if nargin < 6 || isempty(killer)
     killer = 1;
@@ -60,7 +60,7 @@ if killer
     % now we should have some number of entries that can cluster up. Keep those
     % with the lower index.
     nkill = length(xi);
-    if nkill>0
+    if nkill > 0
         uxj = unique(xj);
         for i=1:length(uxj);
             r = find(xj==uxj(i));
@@ -135,7 +135,7 @@ for N = 1:numRepeats
     CCiN(N,:) = CCis(end,:);
 
     % now compute some error function associated with this clustering:
-    switch errMeasure
+    switch errMeas
         case 'sum'
             % minimize sum of within-cluster distances
             tmperrs = zeros(k,1);

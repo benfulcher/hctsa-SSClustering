@@ -4,7 +4,7 @@ function [autoChosenOps,autoChosenIDs] = SS_OutputBestOpsTxtFile(runParams,linka
 load(runParams.normMatFile,'Operations');
 
 %-------------------------------------------------------------------------------
-fprintf('Saving clustering information to %s \n',runParams.outTxtFileName);
+fprintf('Saving clustering information to %s.txt\n',runParams.outFileNameBase);
 fID = fopen([runParams.outFileNameBase,'.txt'],'w');
 fprintf(fID,['Output from kmedoids clustering (k = %u) followed by ',...
     'linkage clustering (threshold = %.2f)\n\n'],...

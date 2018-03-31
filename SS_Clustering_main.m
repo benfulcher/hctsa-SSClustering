@@ -4,7 +4,7 @@
 % clear all;
 
 % Reset random seed:
-rng(0);
+% rng(0);
 
 %-------------------------------------------------------------------------------
 % Set up default run info file
@@ -49,6 +49,6 @@ for i = 1:length(runParams.ks)
 
         % Cluster the time series in the reduced operation space to visualise
         % effectiveness of selected operations
-        SS_TestOpsOnTSClusters;
+        % SS_TestOpsOnTSClusters;
     end
 end
